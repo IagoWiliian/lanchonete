@@ -3,7 +3,8 @@ package com.example.patoslanches.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Sacola {
@@ -12,7 +13,7 @@ public class Sacola {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "sacola", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ItemSacola> itens = new ArrayList<>();
 
     @ManyToOne
@@ -35,11 +36,10 @@ public class Sacola {
     public Double getTotal() {
         return itens.stream()
                 .map(item -> item.getProduto().getPreco()
-                                 .multiply(BigDecimal.valueOf(item.getQuantidade())))
+                        .multiply(BigDecimal.valueOf(item.getQuantidade())))
                 .mapToDouble(BigDecimal::doubleValue)
                 .sum();
     }
-
 
     public void removerItem(Long idProduto) {
         itens.removeIf(item -> item.getProduto().getId().equals(idProduto));

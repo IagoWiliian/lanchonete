@@ -14,6 +14,10 @@ public class ItemSacola {
 
     private Integer quantidade;
 
+    @ManyToOne
+    @JoinColumn(name = "sacola_id")
+    private Sacola sacola;
+
     public ItemSacola() {}
 
     public ItemSacola(Produto produto, Integer quantidade) {
@@ -29,4 +33,7 @@ public class ItemSacola {
 
     public Integer getQuantidade() { return quantidade; }
     public void setQuantidade(Integer quantidade) { this.quantidade = quantidade; }
+
+    public Sacola getSacola() { return sacola; }
+    public void setSacola(Sacola sacola) { this.sacola = sacola; }
 }

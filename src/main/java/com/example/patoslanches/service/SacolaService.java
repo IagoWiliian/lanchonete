@@ -30,7 +30,13 @@ public class SacolaService {
                 .orElse(new Sacola());
 
         sacola.setCliente(cliente);
-        sacola.getItens().add(new ItemSacola(produto, quantidade));
+
+        ItemSacola item = new ItemSacola();
+        item.setProduto(produto);
+        item.setQuantidade(quantidade);
+        item.setSacola(sacola);
+
+        sacola.getItens().add(item);
 
         return sacolaRepository.save(sacola);
     }
@@ -65,8 +71,6 @@ public class SacolaService {
         Usuario cliente = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
-        return sacolaRepository.findAll().stream()
-                .filter(s -> s.getCliente().equals(cliente) && s.isFinalizada())
-                .toList();
+        return sacolaRepository.findByClienteAndFinalizadaTrue(cliente);
     }
 }
